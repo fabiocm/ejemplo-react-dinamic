@@ -21,8 +21,8 @@ const BasicInformation = () => {
   };
   return (
     <Form onFinish={(e) => onSubmit(e)}>
-      <Form.List name="users">
-        {(fields, { add }) => {
+      <Form.List name="Transaction">
+        {(fieldsLine, { add }) => {
           return (
             <>
               <Button
@@ -34,62 +34,128 @@ const BasicInformation = () => {
               >
                 Add Line
               </Button>
-              {fields.map((field, i) => (
-                <Form.List
-                  name={[field.name, 'user2']}
+              {fieldsLine.map((line, i) => (
+                <Collapse
+                  defaultActiveKey={[i]}
                   key={i}
-                  initialValue={dataFromBackend}
-                >
-                  {(fields, { add }) => {
-                    return (
-                      <>
-                        <Button
-                          type="dashed"
-                          onClick={() => {
-                            add();
-                          }}
-                          block
-                        >
-                          Add
-                        </Button>
-                        {fields.map((field, i) => (
-                          <Collapse
-                            key={i}
-                            accordion
-                            style={{
-                              background: 'rgba(25, 103, 210, 0.08)',
-                              border: 'none',
-                            }}
-                          >
-                            <Panel
-                              style={{ border: 'none' }}
-                              header={`Date: ${
-                                dataFromBackend[i]?.start.format(
-                                  'MMMM, DD, YYYY'
-                                ) || moment().format('MMMM, DD, YYYY')
-                              } | ...`}
-                            >
-                              <Form.Item
-                                name={[field.name, 'start']}
-                                label="Start"
-                                fieldKey={[field.fieldKey, 'start']}
-                              >
-                                <DatePicker />
-                              </Form.Item>
-                              <Form.Item
-                                name={[field.name, 'money']}
-                                label="Money"
-                                fieldKey={[field.fieldKey, 'money']}
-                              >
-                                <Input />
-                              </Form.Item>
-                            </Panel>
-                          </Collapse>
-                        ))}
-                      </>
-                    );
+                  accordion
+                  style={{
+                    background: 'rgba(25, 103, 210, 0.08)',
+                    border: 'none',
                   }}
-                </Form.List>
+                >
+                  <Panel
+                    style={{ border: 'none' }}
+                    header={'Line ' + (i + 1)}
+                    key={i}
+                  >
+                    <Form.List
+                      name={[line.name, 'Line']}
+                      fieldKey={[line.fieldKey, 'start2']}
+                    >
+                      {(fieldsGroup, { add }) => {
+                        return (
+                          <>
+                            <Button
+                              type="dashed"
+                              onClick={() => {
+                                add();
+                              }}
+                              block
+                            >
+                              Add Group
+                            </Button>
+                            {fieldsGroup.map((group, i) => (
+                              <Collapse
+                                defaultActiveKey={[i]}
+                                key={i}
+                                accordion
+                                style={{
+                                  background: 'rgba(25, 103, 210, 0.08)',
+                                  border: 'none',
+                                }}
+                              >
+                                <Panel
+                                  style={{ border: 'none' }}
+                                  header={'Group' + (i + 1)}
+                                  key={i}
+                                >
+                                  <Form.List
+                                    name={[group.name, 'Group']}
+                                    fieldKey={[group.fieldKey, 'start3']}
+                                    initialValue={dataFromBackend}
+                                  >
+                                    {(fieldsEntity, { add }) => {
+                                      return (
+                                        <>
+                                          <Button
+                                            type="dashed"
+                                            onClick={() => {
+                                              add();
+                                            }}
+                                            block
+                                          >
+                                            Add entity
+                                          </Button>
+                                          {fieldsEntity.map((entity, i) => (
+                                            <Collapse
+                                              key={i}
+                                              accordion
+                                              style={{
+                                                background:
+                                                  'rgba(25, 103, 210, 0.08)',
+                                                border: 'none',
+                                              }}
+                                            >
+                                              <Panel
+                                                style={{ border: 'none' }}
+                                                header={`Date: ${
+                                                  dataFromBackend[
+                                                    i
+                                                  ]?.start.format(
+                                                    'MMMM, DD, YYYY'
+                                                  ) ||
+                                                  moment().format(
+                                                    'MMMM, DD, YYYY'
+                                                  )
+                                                } | ...`}
+                                              >
+                                                <Form.Item
+                                                  name={[entity.name, 'start']}
+                                                  label="Start"
+                                                  fieldKey={[
+                                                    entity.fieldKey,
+                                                    'start',
+                                                  ]}
+                                                >
+                                                  <DatePicker />
+                                                </Form.Item>
+                                                <Form.Item
+                                                  name={[entity.name, 'money']}
+                                                  label="Money"
+                                                  fieldKey={[
+                                                    entity.fieldKey,
+                                                    'money',
+                                                  ]}
+                                                >
+                                                  <Input />
+                                                </Form.Item>
+                                              </Panel>
+                                            </Collapse>
+                                          ))}
+                                        </>
+                                      );
+                                    }}
+                                  </Form.List>
+                                </Panel>
+                              </Collapse>
+                            ))}
+                          </>
+                        );
+                      }}
+                    </Form.List>
+                  </Panel>
+                </Collapse>
               ))}
             </>
           );
